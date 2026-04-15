@@ -1,12 +1,12 @@
 import RPi.GPIO as GPIO
 import time
 
+led = 26
+photo_pin = 6
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(led, GPIO.OUT)
 GPIO.setup(photo_pin, GPIO.IN)
-
-led = 26
-photo_pin = 6
 
 pwm = GPIO.PWM(led, 200)
 duty = 0.0
