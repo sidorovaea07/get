@@ -20,8 +20,8 @@ class R2R_DAC:
 
         if self.verbose:
             voltage = number / 255 * self.dynamic_range
-            print(f"Установлено число: {number} -> {bits}")
-            print(f"Расчётное напряжение: {voltage:.2f} В")
+            print(f"Число на вход ЦАП: {number}, биты: {bits}")
+            #print(f"Расчётное напряжение: {voltage:.2f} В")
 
     def set_voltage(self, voltage):
         if not (0.0 <= voltage <= self.dynamic_range):
