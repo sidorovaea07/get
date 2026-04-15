@@ -6,7 +6,6 @@ button = 13
 GPIO.setup(button, GPIO.IN)
 GPIO.setup(led, GPIO.OUT)
 state = 0
-period = 1.0
 while True:
     if GPIO.input(button):
         state = not state
