@@ -26,6 +26,7 @@ while True:
         num += 1
         if num > 255:
             num = 0
+        print(num, dec2bin(num))
         GPIO.output(leds, dec2bin(num))
         time.sleep(sleep_time)
 
@@ -33,7 +34,6 @@ while True:
         num -= 1
         if num < 0:
             num = 0
+        print(num, dec2bin(num))
         GPIO.output(leds, dec2bin(num))
         time.sleep(sleep_time)
-
-    print(num, dec2bin(num))    
