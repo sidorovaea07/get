@@ -1,7 +1,7 @@
 import smbus
 
 class MCP4725:
-    def __init__(self, dynamic_range = 5.2, address=0x61, verbose = True):
+    def __init__(self, dynamic_range = 5.0, address=0x61, verbose = True):
         self.bus = smbus.SMBus(1)
 
         self.address = address
@@ -30,7 +30,7 @@ class MCP4725:
         self.bus.write_byte_data(self.address, first_byte, second_byte)
 
         if self.verbose:
-            print(f"Number: {number} send to I2C, addres: 0x{(self.address << 1):02X},  data: [0x{first_byte:02X}, 0x{second_byte:02X}]\n")
+            print(f"Number: {number} send to I2C, address: 0x{(self.address << 1):02X},  data: [0x{first_byte:02X}, 0x{second_byte:02X}]\n")
 
 
     def set_voltage(self, voltage : float) -> None:
