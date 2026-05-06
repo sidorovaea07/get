@@ -1,50 +1,42 @@
 import RPi.GPIO as GPIO
 
+dynamic_range = 3.302
 
 class PWM_DAC:
-    def __init__(self, gpio_pin, pwm_frequency, dynamic_range, verbose=False):
+    def __init__(self, gpio_pin = 12, pwm_frequensy = 500, dynamic_range = 3.302, verbose = False):
         self.gpio_pin = gpio_pin
+        self.pwm_frequensy = pwm_frequensy
         self.dynamic_range = dynamic_range
         self.verbose = verbose
 
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.gpio_pin, GPIO.OUT)
 
-        self.pwm = GPIO.PWM(self.gpio_pin, pwm_frequency)
-        self.pwm.start(0)
+        GPIO.setup(12, GPIO.OUT)  
+        
+        self.pwm = GPIO.PWM(gpio_pin, 1000)
+
+        self.pwm.start(0.0)
 
     def deinit(self):
-        self.pwm.stop()
-        GPIO.output(self.gpio_pin, 0)
         GPIO.cleanup()
 
     def set_voltage(self, voltage):
         if not (0.0 <= voltage <= self.dynamic_range):
-            if self.verbose:
-                print(f"Напряжение выходит за динамический диапазон (0.00 - {self.dynamic_range:.2f} В)")
-                print("Устанавливаем 0.0 В")
-            duty_cycle = 0
-        else:
-            duty_cycle = voltage / self.dynamic_range * 100
-
-        self.pwm.ChangeDutyCycle(duty_cycle)
-
-        if self.verbose:
-            print(f"Установлено напряжение: {voltage:.2f} В")
-            print(f"Коэффициент заполнения: {duty_cycle:.2f} %")
+            raise ValueError(f"Voltage out of range (0.00 - {self.dynamic_range:.2f} В)")
+            return
+        self.pwm.ChangeDutyCycle(voltage / self.dynamic_range * 100)
 
 
 if __name__ == "__main__":
     try:
-        dac = PWM_DAC(12, 500, 3.290, True)
+        dac = PWM_DAC(12, 500, dynamic_range, True)
 
         while True:
             try:
-                voltage = float(input("Введите напряжение в Вольтах: "))
+                voltage = float(input("Input voltage in Volts:  "))
                 dac.set_voltage(voltage)
-
+            
             except ValueError:
-                print("Вы ввели не число. Попробуйте ещё раз\n")
-
+                print("Not a number. Try again.")
     finally:
         dac.deinit()
